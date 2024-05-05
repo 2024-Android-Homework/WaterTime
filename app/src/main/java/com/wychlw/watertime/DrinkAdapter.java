@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
 public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.ViewHolder>{
 
     private List<Drink> mDrinkList;
