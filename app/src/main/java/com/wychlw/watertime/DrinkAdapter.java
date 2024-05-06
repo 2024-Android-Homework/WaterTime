@@ -51,7 +51,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.ViewHolder>{
                     int add = Integer.parseInt(drinkEdit.getText().toString());
                     if(20 > add || add > 2000){
                         Toast.makeText(v.getContext(),
-                                "喝水量范围：20ml-2000ml",Toast.LENGTH_SHORT).show();
+                                "喝水量 n范围：20ml-2000ml",Toast.LENGTH_SHORT).show();
                     }
                     else if (mListener != null) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
