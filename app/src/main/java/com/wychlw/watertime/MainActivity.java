@@ -4,9 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -24,7 +30,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
     final private List<Drink> drinkList = new ArrayList<Drink>();
     private List<Record> recordList;
     private final int OBJECT = 2600;
@@ -51,6 +57,24 @@ public class MainActivity extends Activity {
                 recordList = new ArrayList<Record>();
         }
         restartProgress();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.backup)
+            Toast.makeText(this, "You clicked Backup", Toast.LENGTH_SHORT).show();
+        if(item.getItemId() == R.id.delete)
+            Toast.makeText(this, "You clicked Delete", Toast.LENGTH_SHORT).show();
+        if(item.getItemId() == R.id.settings)
+            Toast.makeText(this, "You clicked Settings", Toast.LENGTH_SHORT).show();
+        return true;
     }
 
     @Override

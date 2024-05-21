@@ -10,13 +10,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.WaterTime"
+        android:theme="@style/Theme.MaterialTest"
         tools:targetApi="31">
         <activity
             android:name=".HistoryActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:label="Water Time"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
