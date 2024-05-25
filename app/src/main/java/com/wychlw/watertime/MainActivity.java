@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.github.lzyzsd.circleprogress.CircleProgress;
+import com.wychlw.watertime.reminder.ReminderActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -84,8 +85,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.backup)
             Toast.makeText(this, "You clicked Backup", Toast.LENGTH_SHORT).show();
-        if(item.getItemId() == R.id.delete)
-            Toast.makeText(this, "You clicked Delete", Toast.LENGTH_SHORT).show();
+        if(item.getItemId() == R.id.delete) {
+            Intent intent = new Intent(MainActivity.this, ReminderActivity.class);
+            startActivity(intent);
+        }
         if(item.getItemId() == R.id.settings)
             Toast.makeText(this, "You clicked Settings", Toast.LENGTH_SHORT).show();
         return true;
