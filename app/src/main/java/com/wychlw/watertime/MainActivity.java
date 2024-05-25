@@ -39,6 +39,24 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewCenter;
     private CircleProgress circleProgress;
 
+    private File RecordFile = null;
+    protected void openFile() {
+        String filename = "RecordData";
+        File dir = getFilesDir();
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        File file = new File(dir, filename);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        RecordFile = file;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,12 +68,8 @@ public class MainActivity extends AppCompatActivity {
         initRecylerView();
         initTextViewTopLeft();
         initTextViewTopRight();
-        File file = new File("data");
-        if (file.exists()) {
-            recordList = (ArrayList<Record>) load();
-            if(recordList == null)
-                recordList = new ArrayList<Record>();
-        }
+        openFile();
+        loadRecord();
         restartProgress();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -80,15 +94,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        save((Serializable) recordList);
     }
-    public void save(Serializable data) {
+    public void saveRecord(List<Record> data) {
+        Serializable serialized = (Serializable) data;
         FileOutputStream fileOut = null;
         ObjectOutputStream objectOut = null;
         try {
-            fileOut = openFileOutput("data", Context.MODE_PRIVATE);
+            fileOut = new FileOutputStream(RecordFile, false);
             objectOut = new ObjectOutputStream(fileOut);
-            objectOut.writeObject(data);
+            objectOut.writeObject(serialized);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -104,12 +118,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    public Serializable load() {
+    public void loadRecord() {
         FileInputStream fileIn = null;
         ObjectInputStream objectIn = null;
         Serializable data = null;
         try {
-            fileIn = openFileInput("data");
+            fileIn = new FileInputStream(RecordFile);
             objectIn = new ObjectInputStream(fileIn);
             data = (Serializable) objectIn.readObject();
         } catch (IOException | ClassNotFoundException e) {
@@ -126,7 +140,12 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        return data;
+        if (data == null) {
+            recordList = new ArrayList<Record>();
+            saveRecord(recordList);
+        } else {
+            recordList = (ArrayList<Record>) data;
+        }
     }
     private void initTextViewTopRight(){
         textViewTopRight.setOnClickListener(new View.OnClickListener() {
@@ -172,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onButtonClick(Record record) {
                 recordList.add(record);
+                saveRecord(recordList);
                 restartProgress();
             }
         });

@@ -48,6 +48,11 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.ViewHolder>{
                 @Override
                 public void onClick(View v) {
                     // Get the value from EditText and pass it to the listener
+                    if (drinkEdit.getText().toString().equals("")) {
+                        Toast.makeText(v.getContext(),
+                                "请输入喝水量",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     int add = Integer.parseInt(drinkEdit.getText().toString());
                     if(20 > add || add > 2000){
                         Toast.makeText(v.getContext(),
