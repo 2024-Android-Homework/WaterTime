@@ -83,8 +83,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.backup)
-            Toast.makeText(this, "You clicked Backup", Toast.LENGTH_SHORT).show();
+        if(item.getItemId() == R.id.backup) {
+            Intent intent = new Intent(MainActivity.this, NoteActivity.class);
+            startActivity(intent);
+        }
         if(item.getItemId() == R.id.delete) {
             Intent intent = new Intent(MainActivity.this, ReminderActivity.class);
             startActivity(intent);

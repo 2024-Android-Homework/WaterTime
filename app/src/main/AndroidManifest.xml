@@ -23,6 +23,10 @@
             android:exported="false" />
         <activity android:name=".reminder.ReminderActivity"
             android:exported="false" />
+        <activity android:name=".NoteActivity"
+            android:exported="false" />
+        <activity android:name=".AddEditDiaryActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:label="Water Time"
