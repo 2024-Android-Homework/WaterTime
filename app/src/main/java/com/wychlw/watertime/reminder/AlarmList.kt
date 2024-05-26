@@ -70,10 +70,15 @@ fun AlarmList(modifier: Modifier = Modifier, state: MutableState<reminderUiState
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Text(
-                            text = "${it.hour}:${it.minute}",
+                            text = "${
+                                if (it.hour.toString().length < 2) "0" + it.hour.toString() else it.hour
+                            }:${
+                                if (it.minute.toString().length < 2) "0" + it.minute.toString() else it.minute
+                            }",
                         )
                         IconButton(onClick = {
                             removeTimingReminder(ctx, state, it.code)
+                            saveState(ctx, state)
                         }) {
                             Icon(
                                 imageVector = Icons.Outlined.Delete,

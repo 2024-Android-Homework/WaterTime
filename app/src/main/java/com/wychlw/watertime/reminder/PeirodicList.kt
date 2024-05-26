@@ -79,6 +79,7 @@ fun PeriodicList(modifier: Modifier = Modifier, state: MutableState<reminderUiSt
                         )
                         IconButton(onClick = {
                             removePeriodicReminder(ctx, state, it.id)
+                            saveState(ctx, state)
                         }) {
                             Icon(
                                 imageVector = Icons.Outlined.Delete,

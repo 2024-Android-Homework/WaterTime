@@ -13,7 +13,9 @@ import androidx.compose.ui.Modifier
 @Composable
 fun PeriodicAdd(modifier: Modifier, state: MutableState<reminderUiState>) {
     FilledTonalIconButton(
-        onClick = { /*TODO*/ },
+        onClick = {
+            state.value.nav.navigate(reminderRoute.ADD_DELAY)
+        },
         modifier = modifier
             .fillMaxWidth()
     ) {

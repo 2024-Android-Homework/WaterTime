@@ -6,8 +6,17 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavController
 import java.io.File
 import java.util.UUID
+
+class reminderRoute() {
+    companion object {
+        val REMINDER = "reminder"
+        val ADD_ALARM = "add_alarm"
+        val ADD_DELAY = "add_delay"
+    }
+}
 
 class reminderMode() {
     companion object{
@@ -34,7 +43,8 @@ data class reminderUiState(
     val intervalList: MutableState<List<periodicReminder>>,
     val timingList: MutableState<List<timingReminder>>,
     val intervalFile: MutableState<File>,
-    val timingFile: MutableState<File>
+    val timingFile: MutableState<File>,
+    val nav: NavController
 )
 
 @Composable
@@ -44,9 +54,8 @@ private fun getReminderMode(): Int {
     return sharedPreferences.getInt("reminderMode", reminderMode.TIMING)
 }
 
-@Composable
-private fun setReminderMode(mode: Int) {
-    val ctx = LocalContext.current
+
+private fun setReminderMode(ctx: Context, mode: Int) {
     val sharedPreferences = ctx.getSharedPreferences("reminderPrefs", Context.MODE_PRIVATE)
     sharedPreferences.edit().putInt("reminderMode", mode).apply()
 }
@@ -58,9 +67,8 @@ private fun getReminderInterval(): Int {
     return sharedPreferences.getInt("reminderInterval", 0)
 }
 
-@Composable
-private fun setReminderInterval(interval: Int) {
-    val ctx = LocalContext.current
+
+private fun setReminderInterval(ctx: Context, interval: Int) {
     val sharedPreferences = ctx.getSharedPreferences("reminderPrefs", Context.MODE_PRIVATE)
     sharedPreferences.edit().putInt("reminderInterval", interval).apply()
 }
@@ -72,22 +80,20 @@ private fun getReminderTiming(): List<Int> {
     return sharedPreferences.getString("reminderTiming", "0,0")!!.split(",").map { it.toInt() }
 }
 
-@Composable
-private fun setReminderTiming(timing: List<Int>) {
-    val ctx = LocalContext.current
+
+private fun setReminderTiming(ctx: Context, timing: List<Int>) {
     val sharedPreferences = ctx.getSharedPreferences("reminderPrefs", Context.MODE_PRIVATE)
     sharedPreferences.edit().putString("reminderTiming", timing.joinToString(",")).apply()
 }
 
-@Composable
-fun saveState(reminderState: MutableState<reminderUiState>) {
-    setReminderMode(reminderState.value.mode.value)
-    setReminderInterval(reminderState.value.interval.value)
-    setReminderTiming(reminderState.value.timing.value)
+fun saveState(ctx: Context, reminderState: MutableState<reminderUiState>) {
+    setReminderMode(ctx, reminderState.value.mode.value)
+    setReminderInterval(ctx, reminderState.value.interval.value)
+    setReminderTiming(ctx, reminderState.value.timing.value)
 }
 
 @Composable
-fun initReminderUiState(): MutableState<reminderUiState> {
+fun initReminderUiState(nav: NavController): MutableState<reminderUiState> {
     val mode = getReminderMode()
     val interval = getReminderInterval()
     val timing = getReminderTiming()
@@ -109,12 +115,13 @@ fun initReminderUiState(): MutableState<reminderUiState> {
                 emptyList<timingReminder>()
             ),
             intervalFile = mutableStateOf(intervalFile),
-            timingFile = mutableStateOf(timingFile)
+            timingFile = mutableStateOf(timingFile),
+            nav = nav
         ))
     }
 
     reminderState.value.intervalList.value = getAllPeriodicReminders(state = reminderState)
-//    reminderState.value.timingList.value =
+    reminderState.value.timingList.value = getAllTimingReminders(state = reminderState)
 
     return reminderState
 }

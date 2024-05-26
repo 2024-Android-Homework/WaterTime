@@ -43,7 +43,6 @@ fun ReminderView(
     modifier: Modifier = Modifier,
     state: MutableState<reminderUiState>
 ) {
-    val ctx = LocalContext.current
     Scaffold(
         topBar = {
             ReminderTopBar(modifier = modifier)
@@ -80,8 +79,6 @@ fun ReminderView(
                 } else {
                     PeriodicAdd(modifier = modifier, state = state)
                 }
-
-
             }
         }
     }
