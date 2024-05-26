@@ -33,6 +33,7 @@ fun ReminderModeSelector(modifier: Modifier = Modifier, state: MutableState<remi
                         alarm.code = reminderAlarmSchedule(ctx, alarm.hour, alarm.minute)
                     }
                 }
+                saveState(ctx, reminderState = state)
             },
             shape = ButtonDefaults.outlinedShape,
             colors = ButtonDefaults.buttonColors(
@@ -59,6 +60,7 @@ fun ReminderModeSelector(modifier: Modifier = Modifier, state: MutableState<remi
                         periodic.id = reminderPeriodicSchedule(ctx, periodic.period)
                     }
                 }
+                saveState(ctx, reminderState = state)
             },
             shape = ButtonDefaults.outlinedShape,
             colors = ButtonDefaults.buttonColors(
