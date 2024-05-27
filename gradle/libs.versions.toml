@@ -38,10 +38,6 @@ gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 androidx-navigation-common = { group = "androidx.navigation", name = "navigation-common", version.ref = "navigationCommon" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-navigation-common-ktx = { group = "androidx.navigation", name = "navigation-common-ktx", version.ref = "navigationCommonKtx" }
-mongo = { group = "com.mongodb", name = "mongo", version.ref = "mongo" }
-mongo-driver_2-9-0-1 = { group = "com.mongodb", name = "mongo-driver_2.9.0-1", version.ref = "mongoDriver_2901" }
-bson = { group = "com.mongodb", name = "bson", version.ref = "bson" }
-bson-driver_2-9-0-1 = { group = "com.mongodb", name = "bson-driver_2.9.0-1", version.ref = "bsonDriver_2901" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

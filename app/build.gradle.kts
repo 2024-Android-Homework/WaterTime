@@ -47,6 +47,7 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/native-image/org.mongodb/bson/native-image.properties"
         }
     }
     configurations {
@@ -71,11 +72,6 @@ dependencies {
     implementation(libs.androidx.navigation.common)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation.common.ktx)
-    implementation(libs.mongo)
-    implementation(libs.bson)
-    implementation("org.mongodb:mongodb-driver-kotlin-coroutine:5.1.0")
-    implementation("org.mongodb:mongodb-driver-kotlin-sync:5.1.0")
-    implementation("org.mongodb:bson-kotlinx:5.1.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
