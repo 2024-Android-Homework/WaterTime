@@ -6,6 +6,7 @@ import android.content.Context
 import androidx.core.app.NotificationCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.wychlw.watertime.R
 import kotlin.random.Random
 
 class reminderWorker(
@@ -32,6 +33,7 @@ class reminderWorker(
             ctx, "drink_water_notification"
         ).setContentTitle("It's time to drink water!")
             .setContentText(quote.getRandomQuotes())
+            .setSmallIcon(R.drawable.ic_water)
             .setAutoCancel(true)
             .build()
         manager.notify(
