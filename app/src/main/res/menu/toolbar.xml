@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_settings"
         android:title="Settings"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/sync"
+        android:icon="@drawable/ic_sync"
+        android:title="Sync"
+        app:showAsAction="always"/>
 </menu>
