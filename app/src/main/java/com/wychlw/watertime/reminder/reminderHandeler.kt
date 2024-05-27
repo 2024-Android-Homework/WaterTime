@@ -30,7 +30,7 @@ fun getAllPeriodicReminders(state: MutableState<reminderUiState>): List<periodic
         val typeToken = object : TypeToken<List<periodicReminder>>() {}
         gson.fromJson(json, typeToken.type)
     } else {
-        emptyList()
+        mutableListOf()
     }
 }
 
@@ -81,7 +81,7 @@ fun getAllTimingReminders(state: MutableState<reminderUiState>): List<timingRemi
         val typeToken = object : TypeToken<List<timingReminder>>() {}
         gson.fromJson(json, typeToken.type)
     } else {
-        emptyList()
+        mutableListOf()
     }
 }
 

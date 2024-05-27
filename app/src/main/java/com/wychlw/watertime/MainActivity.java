@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.github.lzyzsd.circleprogress.CircleProgress;
+import com.wychlw.watertime.DataHandeler.RecordHandeler;
 import com.wychlw.watertime.reminder.ReminderActivity;
 
 import java.io.File;
@@ -40,23 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewCenter;
     private CircleProgress circleProgress;
 
-    private File RecordFile = null;
-    protected void openFile() {
-        String filename = "RecordData";
-        File dir = getFilesDir();
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        File file = new File(dir, filename);
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        RecordFile = file;
-    }
+    private RecordHandeler recordHandeler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +54,11 @@ public class MainActivity extends AppCompatActivity {
         initRecylerView();
         initTextViewTopLeft();
         initTextViewTopRight();
-        openFile();
-        loadRecord();
+
+        Context context = getApplicationContext();
+        recordHandeler = new RecordHandeler(context);
+        recordList = recordHandeler.loadRecord();
+
         restartProgress();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -96,62 +84,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-    public void saveRecord(List<Record> data) {
-        Serializable serialized = (Serializable) data;
-        FileOutputStream fileOut = null;
-        ObjectOutputStream objectOut = null;
-        try {
-            fileOut = new FileOutputStream(RecordFile, false);
-            objectOut = new ObjectOutputStream(fileOut);
-            objectOut.writeObject(serialized);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (objectOut != null) {
-                    objectOut.close();
-                }
-                if (fileOut != null) {
-                    fileOut.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    public void loadRecord() {
-        FileInputStream fileIn = null;
-        ObjectInputStream objectIn = null;
-        Serializable data = null;
-        try {
-            fileIn = new FileInputStream(RecordFile);
-            objectIn = new ObjectInputStream(fileIn);
-            data = (Serializable) objectIn.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (objectIn != null) {
-                    objectIn.close();
-                }
-                if (fileIn != null) {
-                    fileIn.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if (data == null) {
-            recordList = new ArrayList<Record>();
-            saveRecord(recordList);
-        } else {
-            recordList = (ArrayList<Record>) data;
-        }
-    }
     private void initTextViewTopRight(){
         textViewTopRight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onButtonClick(Record record) {
                 recordList.add(record);
-                saveRecord(recordList);
+                recordHandeler.saveRecord(recordList);
                 restartProgress();
             }
         });

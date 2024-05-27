@@ -7,6 +7,60 @@
     android:background="#ddeeff"
     tools:context=".MainActivity">
 
+<<<<<<< HEAD
+=======
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/purple_200"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_scrollFlags="scroll|enterAlways|snap"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp">
+        <TextView
+            android:id="@+id/textViewTopLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/textViewTopRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:text="历史记录"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <com.github.lzyzsd.circleprogress.CircleProgress
+        android:id="@+id/circle_progress"
+        android:layout_width="330dp"
+        android:layout_height="330dp"
+        android:layout_gravity="center"
+        app:circle_text_size="80sp" />
+
+    <TextView
+        android:id="@+id/textViewCenter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:textColor="#0077ee"
+        android:layout_margin="5dp"
+        android:text="今日已摄入："
+        android:textStyle="bold"/>
+
+>>>>>>> refs/remotes/origin/main
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
