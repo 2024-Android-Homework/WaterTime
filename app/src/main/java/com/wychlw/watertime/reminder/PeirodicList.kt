@@ -43,7 +43,7 @@ fun PeriodicList(modifier: Modifier = Modifier, state: MutableState<reminderUiSt
             style = MaterialTheme.typography.titleMedium
         )
 
-        if (state.value.timingList.value.isEmpty()) {
+        if (state.value.intervalList.value.isEmpty()) {
             Row(
                 modifier = modifier
                     .fillMaxWidth(),

@@ -21,6 +21,7 @@ fun ReminderTopBar(
 ) {
     val ctx = LocalContext.current
     TopAppBar(
+        modifier = modifier,
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
