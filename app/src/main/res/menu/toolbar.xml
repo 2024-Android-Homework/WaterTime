@@ -7,7 +7,7 @@
         android:title="Backup"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/delete"
+        android:id="@+id/clock"
         android:icon="@drawable/ic_clock"
         android:title="Delete"
         app:showAsAction="always"/>

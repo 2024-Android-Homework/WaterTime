@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, NoteActivity.class);
             startActivity(intent);
         }
-        if(item.getItemId() == R.id.delete) {
+        if(item.getItemId() == R.id.clock) {
             Intent intent = new Intent(MainActivity.this, ReminderActivity.class);
             startActivity(intent);
         }
