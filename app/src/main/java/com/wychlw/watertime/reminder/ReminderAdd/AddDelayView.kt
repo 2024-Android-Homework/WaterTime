@@ -92,15 +92,22 @@ fun AddDelayView(modifier: Modifier = Modifier, state: MutableState<reminderUiSt
                                 )
                                 state.value.nav.navigateUp()
                                 saveState(ctx, state)
-                            }
+                            },
+                            enabled = ((((timeState.hour * 60) + timeState.minute) * 60) >= 15)
                         ) {
-                            Text(
-                                text = "添加间隔 ${
-                                    if (timeState.hour.toString().length < 2) "0" + timeState.hour.toString() else timeState.hour
-                                }:${
-                                    if (timeState.minute.toString().length < 2) "0" + timeState.minute.toString() else timeState.minute
-                                } 后的提醒"
-                            )
+                            if ((((timeState.hour * 60) + timeState.minute) * 60).toLong() < 15) {
+                                Text(
+                                    text = "间隔时间太短, 请至少设置15分钟以上的间隔"
+                                )
+                            } else {
+                                Text(
+                                    text = "添加间隔 ${
+                                        if (timeState.hour.toString().length < 2) "0" + timeState.hour.toString() else timeState.hour
+                                    }:${
+                                        if (timeState.minute.toString().length < 2) "0" + timeState.minute.toString() else timeState.minute
+                                    } 后的提醒"
+                                )
+                            }
                         }
                     }
                 }

@@ -1,8 +1,11 @@
 package com.wychlw.watertime;
 
+import static com.wychlw.watertime.reminder.InitNotificationKt.initNotification;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -62,6 +66,17 @@ public class MainActivity extends AppCompatActivity {
         restartProgress();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        if (ActivityCompat.checkSelfPermission(
+                context, android.Manifest.permission.POST_NOTIFICATIONS
+        ) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
+                    1
+            );
+        }
+        initNotification(context);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

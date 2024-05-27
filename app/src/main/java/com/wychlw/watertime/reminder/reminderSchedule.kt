@@ -102,6 +102,9 @@ fun reminderAlarmSchedule(ctx: Context, hour: Int, minute: Int): Int {
             set(Calendar.HOUR_OF_DAY, hour)
             set(Calendar.MINUTE, minute)
             set(Calendar.SECOND, 0)
+            if (before(Calendar.getInstance())) {
+                add(Calendar.DATE, 1)
+            }
         }
 
         val intent = Intent(ctx, reminderReceiver::class.java)
@@ -122,6 +125,7 @@ fun reminderAlarmSchedule(ctx: Context, hour: Int, minute: Int): Int {
             pendingIntent
         )
         addRequestCode(ctx, requestCode)
+        System.out.println("Added alarm with requestCode $requestCode")
         return requestCode
     } catch (e: SecurityException) {
         e.printStackTrace()

@@ -55,7 +55,7 @@ fun ReminderModeSelector(modifier: Modifier = Modifier, state: MutableState<remi
             onClick = {
                 if (state.value.mode.value != reminderMode.INTERVAL) {
                     state.value.mode.value = reminderMode.INTERVAL
-                    reminderScheduleCancelAllPeriodic(ctx)
+                    reminderScheduleCancelAllAlarm(ctx)
                     for (periodic in state.value.intervalList.value) {
                         periodic.id = reminderPeriodicSchedule(ctx, periodic.period)
                     }

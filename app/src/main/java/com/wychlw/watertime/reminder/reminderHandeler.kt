@@ -114,3 +114,37 @@ fun removeTimingReminder(ctx: Context, state: MutableState<reminderUiState>, req
     }
 }
 
+fun initReminder(ctx: Context) {
+    val mode = getReminderMode(ctx)
+
+    val intervalFileName = "intervalState"
+    val timingFileName = "timingState"
+    val intervalFile = File(ctx.filesDir, intervalFileName)
+    val timingFile = File(ctx.filesDir, timingFileName)
+    val intervalList = if (intervalFile.exists()) {
+        val gson = Gson()
+        val json = intervalFile.readText()
+        val typeToken = object : TypeToken<List<periodicReminder>>() {}
+        gson.fromJson(json, typeToken.type)
+    } else {
+        emptyList<periodicReminder>()
+    }
+    val timingList = if (timingFile.exists()) {
+        val gson = Gson()
+        val json = timingFile.readText()
+        val typeToken = object : TypeToken<List<timingReminder>>() {}
+        gson.fromJson(json, typeToken.type)
+    } else {
+        emptyList<timingReminder>()
+    }
+
+    if (mode == reminderMode.TIMING) {
+        for (reminder in timingList) {
+            reminderAlarmSchedule(ctx, reminder.hour, reminder.minute)
+        }
+    } else {
+        for (reminder in intervalList) {
+            reminderPeriodicSchedule(ctx, reminder.period)
+        }
+    }
+}

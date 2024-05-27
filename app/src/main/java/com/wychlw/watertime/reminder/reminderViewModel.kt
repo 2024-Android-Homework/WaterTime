@@ -47,41 +47,38 @@ data class reminderUiState(
     val nav: NavController
 )
 
-@Composable
-private fun getReminderMode(): Int {
-    val ctx = LocalContext.current
+
+fun getReminderMode(ctx: Context): Int {
     val sharedPreferences = ctx.getSharedPreferences("reminderPrefs", Context.MODE_PRIVATE)
     return sharedPreferences.getInt("reminderMode", reminderMode.TIMING)
 }
 
 
-private fun setReminderMode(ctx: Context, mode: Int) {
+fun setReminderMode(ctx: Context, mode: Int) {
     val sharedPreferences = ctx.getSharedPreferences("reminderPrefs", Context.MODE_PRIVATE)
     sharedPreferences.edit().putInt("reminderMode", mode).apply()
 }
 
-@Composable
-private fun getReminderInterval(): Int {
-    val ctx = LocalContext.current
+
+fun getReminderInterval(ctx: Context): Int {
     val sharedPreferences = ctx.getSharedPreferences("reminderPrefs", Context.MODE_PRIVATE)
     return sharedPreferences.getInt("reminderInterval", 0)
 }
 
 
-private fun setReminderInterval(ctx: Context, interval: Int) {
+fun setReminderInterval(ctx: Context, interval: Int) {
     val sharedPreferences = ctx.getSharedPreferences("reminderPrefs", Context.MODE_PRIVATE)
     sharedPreferences.edit().putInt("reminderInterval", interval).apply()
 }
 
-@Composable
-private fun getReminderTiming(): List<Int> {
-    val ctx = LocalContext.current
+
+fun getReminderTiming(ctx: Context): List<Int> {
     val sharedPreferences = ctx.getSharedPreferences("reminderPrefs", Context.MODE_PRIVATE)
     return sharedPreferences.getString("reminderTiming", "0,0")!!.split(",").map { it.toInt() }
 }
 
 
-private fun setReminderTiming(ctx: Context, timing: List<Int>) {
+fun setReminderTiming(ctx: Context, timing: List<Int>) {
     val sharedPreferences = ctx.getSharedPreferences("reminderPrefs", Context.MODE_PRIVATE)
     sharedPreferences.edit().putString("reminderTiming", timing.joinToString(",")).apply()
 }
@@ -94,9 +91,10 @@ fun saveState(ctx: Context, reminderState: MutableState<reminderUiState>) {
 
 @Composable
 fun initReminderUiState(nav: NavController): MutableState<reminderUiState> {
-    val mode = getReminderMode()
-    val interval = getReminderInterval()
-    val timing = getReminderTiming()
+    val ctx = LocalContext.current
+    val mode = getReminderMode(ctx)
+    val interval = getReminderInterval(ctx)
+    val timing = getReminderTiming(ctx)
 
     val intervalFileName = "intervalState"
     val timingFileName = "timingState"
