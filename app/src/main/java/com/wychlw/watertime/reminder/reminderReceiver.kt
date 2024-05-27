@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.BroadcastReceiver
 import androidx.core.app.NotificationCompat
 import androidx.work.ListenableWorker
+import com.wychlw.watertime.R
 import kotlin.random.Random
 
 class reminderReceiver : BroadcastReceiver() {
@@ -31,6 +32,7 @@ class reminderReceiver : BroadcastReceiver() {
         ).setContentTitle("It's time to drink water!")
             .setContentText(quote.getRandomQuotes())
             .setAutoCancel(true)
+            .setSmallIcon(R.drawable.ic_water)
             .build()
         manager.notify(
             workerID,
