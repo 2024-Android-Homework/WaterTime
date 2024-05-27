@@ -7,13 +7,13 @@ public class Record implements Serializable {
     final private String drinkName;
     final private int imageId;
     final private int volume;
-    final private LocalDateTime current;
+    final private String current;
 
     public Record(String drinkName, int imageId, int volume, LocalDateTime current) {
         this.drinkName = drinkName;
         this.imageId = imageId;
         this.volume = volume;
-        this.current = current;
+        this.current = current.toString();
     }
 
     public String getDrinkName() {
@@ -29,6 +29,6 @@ public class Record implements Serializable {
     }
 
     public LocalDateTime getCurrent() {
-        return current;
+        return LocalDateTime.parse(current);
     }
 }

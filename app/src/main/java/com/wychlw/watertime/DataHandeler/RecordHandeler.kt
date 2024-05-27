@@ -5,7 +5,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.wychlw.watertime.Record
 import java.io.File
-
 class RecordHandeler {
 
     private var RecordFile: File;
