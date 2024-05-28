@@ -1,5 +1,6 @@
 package com.wychlw.watertime;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.wychlw.watertime.DataHandeler.RecordHandeler;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,16 +33,17 @@ public class NoteActivity extends AppCompatActivity {
     private NoteAdapter noteAdapter;
     private List<Note> noteList;
     private List<Record> recordList;
-    private File recordFile;
     private Map<LocalDate, String> diaryMap;
+    private RecordHandeler recordHandeler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
         initToolbar();
-        openFile();
-        loadRecord();
+        Context context = getApplicationContext();
+        recordHandeler = new RecordHandeler(context);
+        recordList = recordHandeler.loadRecord();
         loadDiary();
         processRecords();
         initRecyclerView();
@@ -56,10 +59,8 @@ public class NoteActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.note_recylerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // 应用自定义的ItemDecoration，间隔高度可以调整
         recyclerView.addItemDecoration(new SpaceItemDecoration(30));
 
-        // 初始化适配器
         noteAdapter = new NoteAdapter(noteList, this);
         recyclerView.setAdapter(noteAdapter);
     }
@@ -94,51 +95,6 @@ public class NoteActivity extends AppCompatActivity {
         }
     }
 
-    protected void openFile() {
-        String filename = "RecordData";
-        File dir = getFilesDir();
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        File file = new File(dir, filename);
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        recordFile = file;
-    }
-
-    public void loadRecord() {
-        FileInputStream fileIn = null;
-        ObjectInputStream objectIn = null;
-        Serializable data = null;
-        try {
-            fileIn = new FileInputStream(recordFile);
-            objectIn = new ObjectInputStream(fileIn);
-            data = (Serializable) objectIn.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (objectIn != null) {
-                    objectIn.close();
-                }
-                if (fileIn != null) {
-                    fileIn.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if (data == null) {
-            recordList = new ArrayList<>();
-        } else {
-            recordList = (ArrayList<Record>) data;
-        }
-    }
 
     private void loadDiary() {
         String filename = "DiaryData";
