@@ -11,6 +11,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -23,7 +24,7 @@ public class StepCountService extends Service implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor stepCounterSensor;
     private int stepCount = 0;
-    private static final int STEP_THRESHOLD = 100;
+    private static final int STEP_THRESHOLD = 10;
 
     @Override
     public void onCreate() {
@@ -50,9 +51,8 @@ public class StepCountService extends Service implements SensorEventListener {
         if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
             stepCount = (int) event.values[0];
             Log.d(TAG, "Step Count: " + stepCount);
-            updateNotification();
             if (stepCount % STEP_THRESHOLD == 0) {
-                sendReminderNotification();
+                sendNotification();
             }
         }
     }
@@ -62,23 +62,9 @@ public class StepCountService extends Service implements SensorEventListener {
         // Do nothing
     }
 
-    private void updateNotification() {
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
-
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Step Count Service")
-                .setContentText("Current step count: " + stepCount)
-                .setSmallIcon(R.drawable.ic_water)
-                .setContentIntent(pendingIntent)
-                .build();
-
-        startForeground(1, notification);
-    }
-
-    private void sendReminderNotification() {
+    private void sendNotification() {
         Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Time to Drink Water")
@@ -89,15 +75,25 @@ public class StepCountService extends Service implements SensorEventListener {
                 .build();
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(2, notification);
+        notificationManager.notify(1, notification);
     }
 
     private void startForegroundService() {
-        updateNotification();
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("Step Count Service")
+                .setContentText("Counting your steps...")
+                .setSmallIcon(R.drawable.ic_water)
+                .setContentIntent(pendingIntent)
+                .build();
+
+        startForeground(1, notification);
     }
 
     private void createNotificationChannel() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel serviceChannel = new NotificationChannel(
                     CHANNEL_ID,
                     "Step Count Service Channel",
