@@ -2,7 +2,6 @@ package com.wychlw.watertime;
 
 import static com.wychlw.watertime.reminder.InitNotificationKt.initNotification;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -24,12 +22,6 @@ import com.github.lzyzsd.circleprogress.CircleProgress;
 import com.wychlw.watertime.DataHandeler.RecordHandeler;
 import com.wychlw.watertime.reminder.ReminderActivity;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -66,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
         restartProgress();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Intent stepCountServiceIntent = new Intent(this, StepCountService.class);
+        startService(stepCountServiceIntent);
 
         if (ActivityCompat.checkSelfPermission(
                 context, android.Manifest.permission.POST_NOTIFICATIONS
