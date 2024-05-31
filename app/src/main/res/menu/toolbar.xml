@@ -2,18 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/backup"
+        android:id="@+id/diary"
         android:icon="@drawable/ic_diary"
-        android:title="Backup"
+        android:title="Diary"
         app:showAsAction="always"/>
     <item
         android:id="@+id/clock"
         android:icon="@drawable/ic_clock"
-        android:title="Delete"
+        android:title="Clock"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/settings"
+        android:id="@+id/setting"
         android:icon="@drawable/ic_settings"
-        android:title="Settings"
+        android:title="Setting"
         app:showAsAction="always"/>
+<!--    <item
+        android:id="@+id/sync"
+        android:icon="@drawable/ic_sync"
+        android:title="Sync"
+        app:showAsAction="always"/>-->
 </menu>

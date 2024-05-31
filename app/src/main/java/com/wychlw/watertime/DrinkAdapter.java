@@ -53,6 +53,10 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.ViewHolder>{
                                 "请输入喝水量",Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    if (!drinkEdit.getText().toString().matches("\\d+")) {
+                        Toast.makeText(v.getContext(), "只能输入正整数", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     int add = Integer.parseInt(drinkEdit.getText().toString());
                     if(20 > add || add > 2000){
                         Toast.makeText(v.getContext(),

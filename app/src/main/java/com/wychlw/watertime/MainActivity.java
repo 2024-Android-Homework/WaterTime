@@ -2,6 +2,7 @@ package com.wychlw.watertime;
 
 import static com.wychlw.watertime.reminder.InitNotificationKt.initNotification;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -20,6 +22,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.github.lzyzsd.circleprogress.CircleProgress;
 import com.wychlw.watertime.DataHandeler.RecordHandeler;
+import com.wychlw.watertime.DataHandeler.SettingHandeler;
 import com.wychlw.watertime.reminder.ReminderActivity;
 
 import java.io.Serializable;
@@ -27,17 +30,19 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     final private List<Drink> drinkList = new ArrayList<Drink>();
     private List<Record> recordList;
-    private final int OBJECT = 2600;
+    private int OBJECT;
+    private static final int REQUEST_CODE_SETTING = 1001;
     private TextView textViewTopLeft;
     private TextView textViewTopRight;
     private TextView textViewCenter;
     private CircleProgress circleProgress;
-
     private RecordHandeler recordHandeler;
+    private SettingHandeler settingHandeler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         recordHandeler = new RecordHandeler(context);
         recordList = recordHandeler.loadRecord();
+
+        settingHandeler = new SettingHandeler(context);
+        OBJECT = settingHandeler.loadSetting();
+        if(OBJECT == 0)
+            OBJECT = 2600;
 
         restartProgress();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -81,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.backup) {
+        if(item.getItemId() == R.id.diary) {
             Intent intent = new Intent(MainActivity.this, NoteActivity.class);
             startActivity(intent);
         }
@@ -89,9 +99,24 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, ReminderActivity.class);
             startActivity(intent);
         }
-        if(item.getItemId() == R.id.settings)
-            Toast.makeText(this, "You clicked Settings", Toast.LENGTH_SHORT).show();
+        if(item.getItemId() == R.id.setting) {
+            Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+            intent.putExtra("OBJECT", OBJECT);
+            settingHandeler.saveSetting(OBJECT);
+            startActivityForResult(intent, REQUEST_CODE_SETTING);
+        }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_SETTING && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                OBJECT = data.getIntExtra("TARGET_WATER", 0);
+                restartProgress();
+            }
+        }
     }
 
     private void initTextViewTopRight(){
