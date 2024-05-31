@@ -13,18 +13,18 @@ import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
 import kotlinx.coroutines.GlobalScope
 
-data class user_data (
-    val records: List<Record>,
-    val periodicReminders: List<periodicReminder>,
-    val timingReminders: List<timingReminder>,
-    val volume: Int
-)
-
 class SyncHandeler {
 
-    private val uuid: UUID
+    private var uuid: UUID
 
     private val serverURL = "https://backend.lingwang.workers.dev/"
+
+    data class user_data (
+        val records: List<Record>,
+        val periodicReminders: List<periodicReminder>,
+        val timingReminders: List<timingReminder>,
+        val volume: Int
+    )
 
     constructor(ctx: Context) {
         val sharedPreferences = ctx.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
@@ -45,6 +45,7 @@ class SyncHandeler {
     fun putUUID(ctx: Context, newUUID: UUID) {
         val sharedPreferences = ctx.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
         sharedPreferences.edit().putString("uuid", newUUID.toString()).apply()
+        uuid = newUUID
     }
 
     fun syncToRemote(ctx: Context) =
