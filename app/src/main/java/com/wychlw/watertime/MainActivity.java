@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.github.lzyzsd.circleprogress.CircleProgress;
 import com.wychlw.watertime.DataHandeler.RecordHandeler;
 import com.wychlw.watertime.DataHandeler.SettingHandeler;
+import com.wychlw.watertime.DataHandeler.SyncHandeler;
 import com.wychlw.watertime.reminder.ReminderActivity;
 
 import java.io.Serializable;

@@ -7,6 +7,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import com.wychlw.watertime.DataHandeler.ReminderDataHandeler
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 import java.io.File
 import java.util.UUID
 
@@ -25,11 +28,14 @@ class reminderMode() {
     }
 }
 
+@Serializable
 data class periodicReminder(
     val period: Long,
+    @Contextual
     var id: UUID
 )
 
+@Serializable
 data class timingReminder(
     val hour: Int,
     val minute: Int,
@@ -42,8 +48,7 @@ data class reminderUiState(
     val timing: MutableState<List<Int>>,
     val intervalList: MutableState<List<periodicReminder>>,
     val timingList: MutableState<List<timingReminder>>,
-    val intervalFile: MutableState<File>,
-    val timingFile: MutableState<File>,
+    val handeler: ReminderDataHandeler,
     val nav: NavController
 )
 
@@ -112,14 +117,15 @@ fun initReminderUiState(nav: NavController): MutableState<reminderUiState> {
             timingList = mutableStateOf(
                 emptyList<timingReminder>()
             ),
-            intervalFile = mutableStateOf(intervalFile),
-            timingFile = mutableStateOf(timingFile),
+            handeler = ReminderDataHandeler(ctx),
             nav = nav
         ))
     }
 
-    reminderState.value.intervalList.value = getAllPeriodicReminders(state = reminderState)
-    reminderState.value.timingList.value = getAllTimingReminders(state = reminderState)
+    val (timingList, intervalList) = reminderState.value.handeler.loadSetting()
+
+    reminderState.value.intervalList.value = intervalList
+    reminderState.value.timingList.value = timingList
 
     return reminderState
 }

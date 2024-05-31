@@ -1,6 +1,7 @@
 package com.wychlw.watertime;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -11,6 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import com.wychlw.watertime.DataHandeler.SyncHandeler;
 
 import java.util.Collections;
 import java.util.List;

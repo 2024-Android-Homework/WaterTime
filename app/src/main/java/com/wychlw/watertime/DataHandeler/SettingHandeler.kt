@@ -12,17 +12,14 @@ class SettingHandeler {
 
     fun loadSetting(): Int {
         return if (SettingFile.exists()) {
-            val gson = Gson()
-            val json = SettingFile.readText()
-            gson.fromJson(json, Int::class.java)
+            val s = SettingFile.readText()
+            return s.toInt()
         } else {
             0
         }
     }
 
     fun saveSetting(setting: Int) {
-        val gson = Gson()
-        val json = gson.toJson(setting)
-        SettingFile.writeText(json)
+           SettingFile.writeText(setting.toString())
     }
 }

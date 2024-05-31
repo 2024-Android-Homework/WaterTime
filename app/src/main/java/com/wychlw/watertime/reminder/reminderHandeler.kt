@@ -6,6 +6,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.wychlw.watertime.DataHandeler.ReminderDataHandeler
 import java.io.File
 import java.io.IOException
 import java.io.Serializable
@@ -13,25 +14,11 @@ import java.time.Period
 import java.util.UUID
 
 fun savePeriodicReminder(state: MutableState<reminderUiState>) {
-    val file = state.value.intervalFile.value
-    val list = state.value.intervalList.value
-
-    val gson = Gson()
-    val json = gson.toJson(list)
-
-    file.writeText(json)
+    state.value.handeler.saveIntervalSetting(state.value.intervalList.value)
 }
 
 fun getAllPeriodicReminders(state: MutableState<reminderUiState>): List<periodicReminder> {
-    val file = state.value.intervalFile.value
-    return if (file.exists()) {
-        val gson = Gson()
-        val json = file.readText()
-        val typeToken = object : TypeToken<List<periodicReminder>>() {}
-        gson.fromJson(json, typeToken.type)
-    } else {
-        mutableListOf()
-    }
+    return state.value.handeler.loadSetting().second
 }
 
 fun addPeriodicReminder(ctx: Context, state: MutableState<reminderUiState>, period: Long) {
@@ -64,25 +51,11 @@ fun removePeriodicReminder(ctx: Context, state: MutableState<reminderUiState>, i
 }
 
 fun saveTimingReminder(state: MutableState<reminderUiState>) {
-    val file = state.value.timingFile.value
-    val list = state.value.timingList.value
-
-    val gson = Gson()
-    val json = gson.toJson(list)
-
-    file.writeText(json)
+    state.value.handeler.saveTimingSetting(state.value.timingList.value)
 }
 
 fun getAllTimingReminders(state: MutableState<reminderUiState>): List<timingReminder> {
-    val file = state.value.timingFile.value
-    return if (file.exists()) {
-        val gson = Gson()
-        val json = file.readText()
-        val typeToken = object : TypeToken<List<timingReminder>>() {}
-        gson.fromJson(json, typeToken.type)
-    } else {
-        mutableListOf()
-    }
+    return state.value.handeler.loadSetting().first
 }
 
 fun addTimingReminder(ctx: Context, state: MutableState<reminderUiState>, hour: Int, minute: Int) {
@@ -117,33 +90,14 @@ fun removeTimingReminder(ctx: Context, state: MutableState<reminderUiState>, req
 fun initReminder(ctx: Context) {
     val mode = getReminderMode(ctx)
 
-    val intervalFileName = "intervalState"
-    val timingFileName = "timingState"
-    val intervalFile = File(ctx.filesDir, intervalFileName)
-    val timingFile = File(ctx.filesDir, timingFileName)
-    val intervalList = if (intervalFile.exists()) {
-        val gson = Gson()
-        val json = intervalFile.readText()
-        val typeToken = object : TypeToken<List<periodicReminder>>() {}
-        gson.fromJson(json, typeToken.type)
-    } else {
-        emptyList<periodicReminder>()
-    }
-    val timingList = if (timingFile.exists()) {
-        val gson = Gson()
-        val json = timingFile.readText()
-        val typeToken = object : TypeToken<List<timingReminder>>() {}
-        gson.fromJson(json, typeToken.type)
-    } else {
-        emptyList<timingReminder>()
-    }
+    val handeler = ReminderDataHandeler(ctx)
 
     if (mode == reminderMode.TIMING) {
-        for (reminder in timingList) {
+        for (reminder in handeler.loadSetting().first) {
             reminderAlarmSchedule(ctx, reminder.hour, reminder.minute)
         }
     } else {
-        for (reminder in intervalList) {
+        for (reminder in handeler.loadSetting().second) {
             reminderPeriodicSchedule(ctx, reminder.period)
         }
     }
