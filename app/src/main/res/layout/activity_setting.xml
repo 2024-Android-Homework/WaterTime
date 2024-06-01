@@ -27,6 +27,58 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:text="UUID："
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/uuid_edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="end">
+
+        <Button
+            android:id="@+id/uuid_pull"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="pull"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="8sp"/>
+
+        <Button
+            android:id="@+id/uuid_push"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="push"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="8sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="8dp"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="每日喝水目标："
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -47,9 +99,7 @@
             android:layout_height="wrap_content"
             android:text="确认"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:onClick="onAffirmButtonClick" />
+            android:textStyle="bold" />
     </LinearLayout>
-
 
 </LinearLayout>
